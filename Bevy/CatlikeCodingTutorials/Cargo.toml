@@ -1,7 +1,11 @@
 [package]
-name = "creating_a_mesh"
+name = "CatlikeCodingTutorials"
 version = "0.1.0"
 edition = "2024"
+
+[[example]]
+name = "creating-a-mesh"
+path = "examples/Procedural Meshes/Creating a Mesh/main.rs"
 
 [dependencies]
 bevy = { version = "0.16", features = ["dynamic_linking"] }
