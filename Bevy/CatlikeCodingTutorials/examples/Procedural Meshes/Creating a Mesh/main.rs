@@ -17,7 +17,7 @@ fn startup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let quad = meshes.add(Sphere::new(0.5).mesh().ico(4).unwrap());
+    let mesh = meshes.add(Sphere::new(0.5).mesh().ico(4).unwrap());
 
     let white = materials.add(StandardMaterial {
         base_color: Color::WHITE,
@@ -26,7 +26,7 @@ fn startup(
     });
 
     commands.spawn((
-        Mesh3d(quad.clone()),
+        Mesh3d(mesh.clone()),
         MeshMaterial3d(white.clone()),
         Transform::from_translation(Vec3::ZERO),
     ));
