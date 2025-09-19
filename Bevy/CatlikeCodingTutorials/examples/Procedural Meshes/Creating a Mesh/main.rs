@@ -30,7 +30,10 @@ fn main() {
         .add_plugins((
             EguiPlugin::default(),
             WorldInspectorPlugin::new(),
-            FPSPlugin,
+            FPSPlugin {
+                font_size: 20.,
+                ..Default::default()
+            },
         ))
         .add_systems(Startup, startup)
         .run();
