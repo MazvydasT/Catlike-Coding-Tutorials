@@ -143,6 +143,10 @@ fn setup(
 fn record_delta_time(time: Res<Time>, mut delta_time_accumulator: ResMut<DeltaTimeQueueResource>) {
     let delta = time.delta_secs_f64();
 
+    if delta == 0. {
+        return;
+    }
+
     let accumulator = &mut delta_time_accumulator.queue;
 
     if accumulator.len() == accumulator.capacity() {
@@ -162,13 +166,13 @@ fn show_stats(
     let queue_len = queue.len();
 
     if queue_len > 0 {
-        let mut delta_time_min = f64::MAX;
-        let mut delta_time_max = 0.;
+        let mut delta_time_min = f64::NAN;
+        let mut delta_time_max = f64::NAN;
         let mut delta_time_sum = 0.;
 
         for delta_time in queue.iter() {
             let dt = *delta_time;
-            
+
             delta_time_min = f64::min(delta_time_min, dt);
             delta_time_max = f64::max(delta_time_max, dt);
             delta_time_sum += dt;
