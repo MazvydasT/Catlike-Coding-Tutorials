@@ -32,6 +32,7 @@ fn main() {
             WorldInspectorPlugin::new(),
             FPSPlugin {
                 font_size: 20.,
+                history_size: 200,
                 ..Default::default()
             },
         ))
@@ -71,7 +72,7 @@ fn startup(
     commands.spawn((
         DirectionalLight {
             color: Color::WHITE,
-            illuminance: 5000.,
+            illuminance: 6000.,
 
             ..Default::default()
         },
