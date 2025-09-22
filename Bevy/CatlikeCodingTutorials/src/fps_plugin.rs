@@ -43,6 +43,7 @@ struct DurationRegex {
 enum FPSTextType {
     Avg,
     Min,
+    Max,
 }
 
 impl Default for FPSPlugin {
@@ -109,7 +110,16 @@ fn setup(
         },
         children![
             (
-                Text::new("Avg. FPS:"),
+                Text::new("Min.:"),
+                text_font.clone(),
+                children![(
+                    TextSpan::new(&starting_string),
+                    fps_font.clone(),
+                    FPSTextType::Min
+                )]
+            ),
+            (
+                Text::new("Avg.:"),
                 text_font.clone(),
                 children![(
                     TextSpan::new(&starting_string),
@@ -118,12 +128,12 @@ fn setup(
                 )]
             ),
             (
-                Text::new("Min. FPS:"),
+                Text::new("Max.:"),
                 text_font.clone(),
                 children![(
                     TextSpan::new(&starting_string),
                     fps_font.clone(),
-                    FPSTextType::Min
+                    FPSTextType::Max
                 )]
             )
         ],
@@ -152,16 +162,21 @@ fn show_stats(
     let queue_len = queue.len();
 
     if queue_len > 0 {
+        let mut delta_time_min = f64::MAX;
         let mut delta_time_max = 0.;
         let mut delta_time_sum = 0.;
 
         for delta_time in queue.iter() {
-            delta_time_max = f64::max(delta_time_max, *delta_time);
-            delta_time_sum += delta_time;
+            let dt = *delta_time;
+            
+            delta_time_min = f64::min(delta_time_min, dt);
+            delta_time_max = f64::max(delta_time_max, dt);
+            delta_time_sum += dt;
         }
 
         let avg_frame_duration_in_seconds = delta_time_sum / (queue.len() as f64);
         let avg_fps = 1. / avg_frame_duration_in_seconds;
+        let max_fps = 1. / delta_time_min;
         let min_fps = 1. / delta_time_max;
 
         fps_text
@@ -170,21 +185,24 @@ fn show_stats(
                 let (fps, duration_in_seconds) = match fps_text_type {
                     FPSTextType::Avg => (avg_fps, avg_frame_duration_in_seconds),
                     FPSTextType::Min => (min_fps, delta_time_max),
+                    FPSTextType::Max => (max_fps, delta_time_min),
                 };
 
-                let duration_as_string: String = format!("{:?}", Duration::from_secs_f64(duration_in_seconds));
-                let formatted_duration = if let Some(captures) = duration_regex.regex.captures(&duration_as_string) {
-                    let numeric_part = captures
-                        .get(1)
-                        .map_or("", |m| m.as_str())
-                        .parse::<f64>()
-                        .unwrap_or(f64::NAN);
-                    let units_part = captures.get(2).map_or("", |m| m.as_str());
+                let duration_as_string: String =
+                    format!("{:?}", Duration::from_secs_f64(duration_in_seconds));
+                let formatted_duration =
+                    if let Some(captures) = duration_regex.regex.captures(&duration_as_string) {
+                        let numeric_part = captures
+                            .get(1)
+                            .map_or("", |m| m.as_str())
+                            .parse::<f64>()
+                            .unwrap_or(f64::NAN);
+                        let units_part = captures.get(2).map_or("", |m| m.as_str());
 
-                    format!("{: >6.2}{: <2}", numeric_part, units_part)
-                } else {
-                    String::from("ERROR")
-                };
+                        format!("{: >6.2}{: <2}", numeric_part, units_part)
+                    } else {
+                        String::from("ERROR")
+                    };
 
                 text_span.0 = format!("{: >4.0} | {}", fps, formatted_duration);
             });

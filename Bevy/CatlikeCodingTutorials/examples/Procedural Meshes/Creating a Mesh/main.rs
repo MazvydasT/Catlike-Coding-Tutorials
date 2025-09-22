@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use bevy::{
     asset::RenderAssetUsages,
     core_pipeline::tonemapping::Tonemapping,
@@ -32,8 +34,8 @@ fn main() {
             WorldInspectorPlugin::new(),
             FPSPlugin {
                 font_size: 20.,
-                history_size: 200,
-                ..Default::default()
+                history_size: 1000,
+                refresh_ui_every: Duration::from_millis(700)
             },
         ))
         .add_systems(Startup, startup)
