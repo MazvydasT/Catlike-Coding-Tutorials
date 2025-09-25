@@ -147,13 +147,13 @@ fn record_delta_time(time: Res<Time>, mut delta_time_accumulator: ResMut<DeltaTi
         return;
     }
 
-    let accumulator = &mut delta_time_accumulator.queue;
+    let queue = &mut delta_time_accumulator.queue;
 
-    if accumulator.len() == accumulator.capacity() {
-        accumulator.pop_front();
+    if queue.len() == queue.capacity() {
+        queue.pop_front();
     }
 
-    accumulator.push_back(delta);
+    queue.push_back(delta);
 }
 
 fn show_stats(

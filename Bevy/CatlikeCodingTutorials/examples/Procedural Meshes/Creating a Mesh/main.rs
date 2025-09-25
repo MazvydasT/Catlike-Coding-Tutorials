@@ -11,10 +11,6 @@ use bevy::{
 
 use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
 
-#[path = "../../../src/utils.rs"]
-mod utils;
-use utils::*;
-
 #[path = "../../../src/fps_plugin.rs"]
 mod fps_plugin;
 use crate::fps_plugin::FPSPlugin;
@@ -35,7 +31,7 @@ fn main() {
             FPSPlugin {
                 font_size: 20.,
                 history_size: 1000,
-                refresh_ui_every: Duration::from_millis(700)
+                refresh_ui_every: Duration::from_millis(700),
             },
         ))
         .add_systems(Startup, startup)
@@ -80,8 +76,8 @@ fn startup(
         },
         Transform::from_rotation(Quat::from_euler(
             EulerRot::XYZ,
-            deg2rad(50.),
-            deg2rad(30.),
+            f32::to_radians(50.),
+            f32::to_radians(30.),
             0.,
         )),
     ));
@@ -90,7 +86,7 @@ fn startup(
         Camera3d::default(),
         Transform::from_translation(Vec3::new(0.5, 0.5, 1.)),
         Projection::from(PerspectiveProjection {
-            fov: deg2rad(60.),
+            fov: f32::to_radians(60.),
             near: 0.3,
             far: 1000.,
             ..Default::default()
