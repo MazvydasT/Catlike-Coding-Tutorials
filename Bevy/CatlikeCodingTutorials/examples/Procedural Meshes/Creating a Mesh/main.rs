@@ -3,35 +3,38 @@ use std::time::Duration;
 use bevy::{
     asset::RenderAssetUsages,
     core_pipeline::tonemapping::Tonemapping,
+    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin, FrameTimeGraphConfig},
     image::ImageLoaderSettings,
+    mesh::{Indices, PrimitiveTopology},
     prelude::*,
-    render::mesh::{Indices, PrimitiveTopology},
     window::PresentMode,
 };
 
 use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
 
-#[path = "../../../src/fps_plugin.rs"]
-mod fps_plugin;
-use crate::fps_plugin::FPSPlugin;
-
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::BLACK))
-        .add_plugins(DefaultPlugins.set(WindowPlugin {
+        .add_plugins((DefaultPlugins.set(WindowPlugin {
             primary_window: Some(Window {
                 present_mode: PresentMode::AutoNoVsync,
-                ..Default::default()
+                ..default()
             }),
-            ..Default::default()
-        }))
+            ..default()
+        }),))
         .add_plugins((
             EguiPlugin::default(),
             WorldInspectorPlugin::new(),
-            FPSPlugin {
-                font_size: 20.,
-                history_size: 1000,
-                refresh_ui_every: Duration::from_millis(700),
+            FpsOverlayPlugin {
+                config: FpsOverlayConfig {
+                    refresh_interval: Duration::from_millis(1000),
+                    frame_time_graph_config: FrameTimeGraphConfig {
+                        enabled: true,
+                        min_fps: 60.,
+                        target_fps: 800.,
+                    },
+                    ..default()
+                },
             },
         ))
         .add_systems(Startup, startup)
