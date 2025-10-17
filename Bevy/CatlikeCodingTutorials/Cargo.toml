@@ -8,7 +8,10 @@ name = "creating-a-mesh"
 path = "examples/Procedural Meshes/Creating a Mesh/main.rs"
 
 [dependencies]
-bevy = { version = "0.17", features = ["bevy_dev_tools", "dynamic_linking"] }
+bevy = { version = "0.17", features = [
+    "bevy_dev_tools",
+    "dynamic_linking"
+] }
 bevy-inspector-egui = "0.34"
 regex = "1"
 
