@@ -8,11 +8,8 @@ name = "creating-a-mesh"
 path = "examples/Procedural Meshes/Creating a Mesh/main.rs"
 
 [dependencies]
-bevy = { version = "0.17", features = [
-    "bevy_dev_tools",
-    "dynamic_linking"
-] }
-bevy-inspector-egui = "0.34"
+bevy = { version = "0.18", features = ["bevy_dev_tools"] }
+bevy-inspector-egui = "0.36"
 regex = "1"
 
 # Enable a small amount of optimization in the dev profile.

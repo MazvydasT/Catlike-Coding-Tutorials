@@ -65,8 +65,8 @@ fn startup(
     });
 
     commands.spawn((
-        Mesh3d(mesh_handle.clone()),
-        MeshMaterial3d(material_handle.clone()),
+        Mesh3d(mesh_handle),
+        MeshMaterial3d(material_handle),
         Transform::from_translation(Vec3::ZERO),
     ));
 
