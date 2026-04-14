@@ -9,7 +9,6 @@ use bevy::{
         component::Component,
         resource::Resource,
         schedule::IntoScheduleConfigs,
-        spawn::SpawnRelated,
         system::{Commands, Query, Res, ResMut},
     },
     text::{Font, TextFont, TextSpan},

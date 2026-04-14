@@ -1,42 +1,17 @@
-use std::time::Duration;
-
 use bevy::{
     asset::RenderAssetUsages,
     core_pipeline::tonemapping::Tonemapping,
-    dev_tools::fps_overlay::{FpsOverlayConfig, FpsOverlayPlugin, FrameTimeGraphConfig},
     image::ImageLoaderSettings,
     mesh::{Indices, PrimitiveTopology},
     prelude::*,
-    window::PresentMode,
 };
 
-use bevy_inspector_egui::{bevy_egui::EguiPlugin, quick::WorldInspectorPlugin};
+use catlike_coding_tutorials::CommonPlugin;
 
 fn main() {
     App::new()
         .insert_resource(ClearColor(Color::BLACK))
-        .add_plugins((DefaultPlugins.set(WindowPlugin {
-            primary_window: Some(Window {
-                present_mode: PresentMode::AutoNoVsync,
-                ..default()
-            }),
-            ..default()
-        }),))
-        .add_plugins((
-            EguiPlugin::default(),
-            WorldInspectorPlugin::new(),
-            FpsOverlayPlugin {
-                config: FpsOverlayConfig {
-                    refresh_interval: Duration::from_millis(1000),
-                    frame_time_graph_config: FrameTimeGraphConfig {
-                        enabled: true,
-                        min_fps: 60.,
-                        target_fps: 800.,
-                    },
-                    ..default()
-                },
-            },
-        ))
+        .add_plugins(CommonPlugin)
         .add_systems(Startup, startup)
         .run();
 }
