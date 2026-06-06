@@ -7,10 +7,14 @@ edition = "2024"
 name = "creating-a-mesh"
 path = "examples/Procedural Meshes/Creating a Mesh/main.rs"
 
+[[example]]
+name = "multithreaded-write"
+path = "examples/multithreaded_write.rs"
+
 [dependencies]
 bevy = { version = "0.18", features = ["bevy_dev_tools"] }
 bevy-inspector-egui = "0.36"
-regex = "1"
+regex = "1.12"
 
 # Set max log levels. This helps avoid unwanted low-severity log spam, which can affect performance.
 log = { version = "0.4", features = [
