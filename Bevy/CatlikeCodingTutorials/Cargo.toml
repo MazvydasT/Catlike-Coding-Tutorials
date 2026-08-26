@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [[example]]
+name = "game-objects-and-scripts"
+path = "examples/Basics/Game Objects and Scripts/main.rs"
+
+[[example]]
 name = "creating-a-mesh"
 path = "examples/Procedural Meshes/Creating a Mesh/main.rs"
 
@@ -12,9 +16,10 @@ name = "multithreaded-write"
 path = "examples/multithreaded_write.rs"
 
 [dependencies]
-bevy = { version = "0.18", features = ["bevy_dev_tools"] }
-bevy-inspector-egui = "0.36"
-regex = "1.12"
+bevy = { version = "0.19", features = ["bevy_dev_tools", "area_light_luts"] }
+bevy-inspector-egui = "0.37"
+regex = "1.13"
+time = { version = "0.3", features = ["local-offset", "wasm-bindgen"] }
 
 # Set max log levels. This helps avoid unwanted low-severity log spam, which can affect performance.
 log = { version = "0.4", features = [
