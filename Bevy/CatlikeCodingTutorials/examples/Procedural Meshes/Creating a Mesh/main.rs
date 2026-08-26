@@ -23,14 +23,14 @@ fn startup(
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
     let mesh_handle = meshes.add(create_quad_mesh());
-    let base_map_handle: Handle<Image> = asset_server.load_with_settings(
-        "textures/base-map.png",
-        |settings: &mut ImageLoaderSettings| settings.is_srgb = true,
-    );
-    let normal_map_handle: Handle<Image> = asset_server.load_with_settings(
-        "textures/normal-map.png",
-        |settings: &mut ImageLoaderSettings| settings.is_srgb = false,
-    );
+    let base_map_handle: Handle<Image> = asset_server
+        .load_builder()
+        .with_settings(|settings: &mut ImageLoaderSettings| settings.is_srgb = true)
+        .load("textures/base-map.png");
+    let normal_map_handle: Handle<Image> = asset_server
+        .load_builder()
+        .with_settings(|settings: &mut ImageLoaderSettings| settings.is_srgb = false)
+        .load("textures/normal-map.png");
 
     let material_handle = materials.add(StandardMaterial {
         base_color: Color::WHITE,
@@ -63,7 +63,7 @@ fn startup(
     commands.spawn((
         Camera3d::default(),
         Transform::from_translation(Vec3::new(0.5, 0.5, 1.)),
-        Projection::from(PerspectiveProjection {
+        Projection::Perspective(PerspectiveProjection {
             fov: f32::to_radians(60.),
             near: 0.3,
             far: 1000.,

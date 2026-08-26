@@ -3,7 +3,7 @@ use std::{collections::VecDeque, time::Duration};
 
 use bevy::{
     app::{Plugin, Startup, Update},
-    asset::{AssetServer, Handle},
+    asset::AssetServer,
     ecs::{
         children,
         component::Component,
@@ -11,7 +11,7 @@ use bevy::{
         schedule::IntoScheduleConfigs,
         system::{Commands, Query, Res, ResMut},
     },
-    text::{Font, TextFont, TextSpan},
+    text::{FontSize, FontSource, TextFont, TextSpan},
     time::{Time, common_conditions::on_real_timer},
     ui::{Display, FlexDirection, Node, PositionType, Val, widget::Text},
 };
@@ -82,17 +82,17 @@ fn setup(
     asset_server: Res<AssetServer>,
     font_size_resource: Res<FontSizeResource>,
 ) {
-    let font_handle: Handle<Font> = asset_server.load("fonts/SpaceMono-Regular.ttf");
+    let font_handle = FontSource::from(asset_server.load("fonts/SpaceMono-Regular.ttf"));
 
     let text_font = TextFont {
         font: font_handle.clone(),
-        font_size: font_size_resource.font_size * 0.7,
+        font_size: FontSize::Px(font_size_resource.font_size * 0.7),
         ..Default::default()
     };
 
     let fps_font = TextFont {
         font: font_handle.clone(),
-        font_size: font_size_resource.font_size,
+        font_size: FontSize::Px(font_size_resource.font_size),
         ..Default::default()
     };
 
