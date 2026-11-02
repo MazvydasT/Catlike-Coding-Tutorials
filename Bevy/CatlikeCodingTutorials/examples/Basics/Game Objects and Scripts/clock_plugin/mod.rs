@@ -10,6 +10,7 @@ use bevy::{
     camera::{Camera3d, PerspectiveProjection, Projection, visibility::Visibility},
     color::{Color, Srgba},
     core_pipeline::tonemapping::Tonemapping,
+    curve::{Curve, EaseFunction, EasingCurve},
     ecs::{
         children,
         component::Component,
@@ -18,13 +19,11 @@ use bevy::{
         system::{Commands, Query, Res, ResMut},
     },
     light::{DirectionalLight, SpotLight},
-    math::{
-        Curve, Dir3, FloatExt, Quat, Vec3,
-        curve::{EaseFunction, EasingCurve},
-        primitives::{Cuboid, Cylinder},
-    },
+    math::{Dir3, FloatExt, Quat, Vec3},
     mesh::{Mesh, Mesh3d, MeshBuilder, Meshable},
     pbr::{MeshMaterial3d, StandardMaterial},
+    render::view::DebandDither,
+    shape::{Cuboid, Cylinder},
     time::{Time, Timer, TimerMode, common_conditions::on_timer},
     transform::components::Transform,
 };
@@ -72,7 +71,7 @@ fn startup(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    let face_mesh_handle = meshes.add(Cylinder::new(5., 0.2).mesh().build());
+    let face_mesh_handle = meshes.add(Cylinder::new(5., 0.2).mesh().resolution(360).build());
     let face_material_handle = materials.add(StandardMaterial {
         base_color: Srgba::hex("#808080").unwrap().into(),
 
@@ -203,6 +202,7 @@ fn startup(
             ..Default::default()
         }),
         Tonemapping::None,
+        DebandDither::Disabled,
     ));
 }
 
@@ -263,7 +263,7 @@ fn set_animation_timers(
                     } else {
                         Some(time_component_to_radians(
                             hour,
-                            time_component_type,
+                            &time_component_type,
                             -TAU * 2.,
                         ))
                     }
@@ -273,7 +273,11 @@ fn set_animation_timers(
                     if previous_minute_option == Some(minute) {
                         None
                     } else {
-                        Some(time_component_to_radians(minute, time_component_type, -TAU))
+                        Some(time_component_to_radians(
+                            minute,
+                            &time_component_type,
+                            -TAU,
+                        ))
                     }
                 }
 
@@ -281,7 +285,11 @@ fn set_animation_timers(
                     if previous_second_option == Some(second) {
                         None
                     } else {
-                        Some(time_component_to_radians(second, time_component_type, -TAU))
+                        Some(time_component_to_radians(
+                            second,
+                            &time_component_type,
+                            -TAU,
+                        ))
                     }
                 }
             };

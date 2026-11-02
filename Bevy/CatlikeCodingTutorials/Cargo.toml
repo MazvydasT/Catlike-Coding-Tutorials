@@ -16,8 +16,11 @@ name = "multithreaded-write"
 path = "examples/multithreaded_write.rs"
 
 [dependencies]
-bevy = { version = "0.19", features = ["bevy_dev_tools", "area_light_luts"] }
-bevy-inspector-egui = "0.37"
+bevy = { version = "0.20", features = [
+    "render_dev_tools",
+    "area_light_luts",
+] }
+bevy-inspector-egui = "0.38"
 regex = "1.13"
 time = { version = "0.3", features = ["local-offset", "wasm-bindgen"] }
 
